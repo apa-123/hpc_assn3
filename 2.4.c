@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
     }
 
     int counts[num_ranks - 1];
-    MPI_Gather(&local_count, 1, MPI_INT, 1, MPI_INT, 0, MPI_COMM_WORLD, &counts);
+    MPI_Gather(&local_count, 1, MPI_INT, &counts, 1, MPI_INT, 0, MPI_COMM_WORLD);
     
     if (rank == 0) {
 	    total_count += local_count;
