@@ -31,7 +31,6 @@ int main(int argc, char* argv[])
     int* shared_mem = malloc(num_ranks*sizeof(int));
     for (int i = 0; i < num_ranks; ++i)
     {
-        local_mem[i] = 1;
         shared_mem[i] = 0;
     }
 
@@ -61,7 +60,7 @@ int main(int argc, char* argv[])
     // printf("I am rank %d\n", rank);
 
     MPI_Win_fence(0, win);    
-    MPI_Put(local_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
+    MPI_Put(local_mem, 1, MPI_INT, 0, 0, 1, MPI_INT, win);
     // MPI_Win_fence(0, win);    
     printf("I am rank %d and I sent %d \n", rank, local_count);
 
