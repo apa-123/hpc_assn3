@@ -62,12 +62,13 @@ int main(int argc, char* argv[])
 
     MPI_Win_fence(0, win);    
     MPI_Put(local_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
+    MPI_Win_fence(0, win);    
 
     if (rank == 0) {
         // MPI_Win_fence(0, win);    
         MPI_Get(shared_mem, num_ranks, MPI_INT, 1, 0, num_ranks, MPI_INT, win);
         // MPI_Win_fence(0, win);    
-        
+
 	    total_count += local_count;
 	    for (i = 0; i < num_ranks - 1; i++) {
 	    	total_count += shared_mem[i];
@@ -85,7 +86,7 @@ int main(int argc, char* argv[])
 //       printf("The result is %f\n", pi);
     }
     
-    MPI_Win_fence(0, win);    
+    // MPI_Win_fence(0, win);    
     MPI_Win_free(&win);
     MPI_Finalize(); 
 
