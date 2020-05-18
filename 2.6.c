@@ -37,7 +37,6 @@ int main(int argc, char* argv[])
 
     MPI_Win win;
     MPI_Win_create(shared_mem, num_ranks*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
-    // MPI_Win_allocate(1000*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &local_count, &win);
 
     // replace seed with 100
     srand(time(NULL) + 123456789 + rank * SEED); // Important: Multiply SEED by "rank" when you introduce MPI!
@@ -59,18 +58,20 @@ int main(int argc, char* argv[])
 	}
     }
     local_mem[0] = local_count;
+    // printf("I am rank %d\n", rank);
 
     MPI_Win_fence(0, win);    
     MPI_Put(local_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
-    MPI_Win_fence(0, win);    
+    // MPI_Win_fence(0, win);    
+    printf("I am rank %d and I sent %d \n", rank, local_count);
 
     if (rank == 0) {
         // MPI_Win_fence(0, win);    
-        MPI_Get(shared_mem, num_ranks, MPI_INT, 1, 0, num_ranks, MPI_INT, win);
+        MPI_Get(shared_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
         // MPI_Win_fence(0, win);    
 
-	    total_count += local_count;
-	    for (i = 0; i < num_ranks - 1; i++) {
+	    // total_count += local_count;
+	    for (i = 0; i < num_ranks; i++) {
 	    	total_count += shared_mem[i];
 	    }
     	    // Estimate Pi and display the result
