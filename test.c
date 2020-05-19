@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     }
 
     MPI_Win win;
-    MPI_Win_create(shared_mem, N*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
+    MPI_Win_create(shared_mem, N*num_procs*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
     // MPI_Win_allocate(1000*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &local_count, &win);
 
     MPI_Win_fence(0, win);    
