@@ -62,7 +62,11 @@ int main(int argc, char* argv[])
     MPI_Win_fence(0, win);    
     MPI_Put(local_mem, 1, MPI_INT, 0, rank*sizeof(int), 1, MPI_INT, win);
     // MPI_Win_fence(0, win);    
-    printf("I am rank %d and I sent %d \n", rank, local_count);
+    printf("I am rank %d and I sent data %d \n", rank, local_count);
+
+    for (i = 0; i < num_ranks; i++) {
+        printf("Val %d in shared_mem rank: %d %d\n", i, shared_mem[i], rank);
+    }
 
     if (rank == 0) {
         // MPI_Get(shared_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
