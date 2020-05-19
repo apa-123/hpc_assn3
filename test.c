@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
     MPI_Win_fence(0, win);    
     
     printf("mpi rank %d got data: ", proc_id);
-    for (int i = 0; i < num_procs; i++) {
+    for (int i = 0; i < N; i++) {
         printf("%d ", shared_mem[i]);
     }
     printf("\n");
