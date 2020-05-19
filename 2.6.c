@@ -45,19 +45,18 @@ int main(int argc, char* argv[])
     // Calculate PI following a Monte Carlo method
     for (iter = 0; iter < flip; iter++) 
     {
-	// Generate random (X,Y) points
-	x = (double)random() / (double)RAND_MAX;
-	y = (double)random() / (double)RAND_MAX;
-	z = sqrt((x*x) + (y*y));
-	
-	// Check if point is in unit circle
-	if (z <= 1.0)
-	{
-	    local_count++;
-	}
+        // Generate random (X,Y) points
+        x = (double)random() / (double)RAND_MAX;
+        y = (double)random() / (double)RAND_MAX;
+        z = sqrt((x*x) + (y*y));
+        
+        // Check if point is in unit circle
+        if (z <= 1.0)
+        {
+            local_count++;
+        }
     }
     local_mem[0] = local_count;
-    // printf("I am rank %d\n", rank);
 
     MPI_Win_fence(0, win);    
     // MPI_Put(local_mem, 1, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
@@ -67,7 +66,6 @@ int main(int argc, char* argv[])
     printf("I am rank %d and I sent data %d \n", rank, local_count);
 
     if (rank == 0) {
-	    // total_count += local_count;
 	    for (i = 0; i < num_ranks; i++) {
             printf("Val %d in shared_mem: %d\n", i, shared_mem[i]);
 	    	total_count += shared_mem[i];

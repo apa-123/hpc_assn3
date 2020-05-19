@@ -25,13 +25,13 @@ int main(int argc, char* argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_id);
 
     int N = 4;
-    int* local_mem = malloc(1 * sizeof(int));
+    int* local_mem = malloc(N* sizeof(int));
     int* shared_mem = malloc(N*sizeof(int));
     for (int i = 0; i < N; ++i)
     {
+        local_mem[i] = proc_id * N + i;
         shared_mem[i] = 0;
     }
-    local_mem[0] = proc_id;
 
     MPI_Win win;
     MPI_Win_create(shared_mem, N*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
@@ -40,33 +40,18 @@ int main(int argc, char* argv[])
     printf("HELLO\n");
 
     MPI_Win_fence(0, win);    
-    MPI_Put(local_mem, N, MPI_INT, 0, 0, N, MPI_INT, win);
+    MPI_Put(local_mem, N, MPI_INT, (proc_id+1)%num_procs, 0, N, MPI_INT, win);
     MPI_Win_fence(0, win);    
-        for (int i = 0; i < num_procs; i++) {
-        printf("Val %d in shared_mem rank: %d %d\n", i, shared_mem[i], proc_id);
-    }
-
-
-    printf("I am rank %d and I got data\n", proc_id);
-
-    if (proc_id == 0) {
-	    int counts[num_procs - 1];
-        MPI_Get(&counts, num_procs - 1, MPI_INT, 0, 0, 1, MPI_INT, win);
-
-
-	    // total_count += local_count;
-	    for (int i = 0; i < num_procs - 1; i++) {
-	    	total_count += counts[i];
-	    }
-    	    // Estimate Pi and display the result
-    	pi = ((double)total_count / (double) (flip * num_procs)) * 4.0;
+    
+    printf("mpi rank %d got data: ", proc_id);
+    for (int i = 0; i < num_procs; i++) {
+        printf("%d ", shared_mem[i]);
     }
 
     stop_time = MPI_Wtime();
     elapsed_time = stop_time - start_time;
 
     if (proc_id == 0) {
-       printf("pi: %f\n", pi);
        printf("Execution Time: %f\n", elapsed_time);
 //       printf("The result is %f\n", pi);
     }
