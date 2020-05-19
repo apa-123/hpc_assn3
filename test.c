@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 
     MPI_Win_fence(0, win);    
     // MPI_Put(local_mem, N, MPI_INT, (proc_id+1)%num_procs, 0, N, MPI_INT, win);
-    MPI_Put(local_mem, N, MPI_INT, 0, proc_id*sizeof(int)*N, N, MPI_INT, win);
+    MPI_Put(local_mem, N, MPI_INT, 0, proc_id*sizeof(int) + N, N, MPI_INT, win);
 
     MPI_Win_fence(0, win);    
     
