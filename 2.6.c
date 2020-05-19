@@ -63,11 +63,11 @@ int main(int argc, char* argv[])
     MPI_Put(local_mem, 1, MPI_INT, 0, rank, 1, MPI_INT, win);
     MPI_Win_fence(0, win);    
   
-    printf("I am rank %d and I sent data %d \n", rank, local_count);
+    // printf("I am rank %d and I sent data %d \n", rank, local_count);
 
     if (rank == 0) {
 	    for (i = 0; i < num_ranks; i++) {
-            printf("Val %d in shared_mem: %d\n", i, shared_mem[i]);
+            // printf("Val %d in shared_mem: %d\n", i, shared_mem[i]);
 	    	total_count += shared_mem[i];
 	    }
     	// Estimate Pi and display the result
