@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
     int* shared_mem = malloc(N*sizeof(int));
     for (int i = 0; i < N; ++i)
     {
-        local_mem[i] = 1;
+        local_mem[i] = proc_id * N + i;
         shared_mem[i] = 0;
     }
 
@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
     printf("HELLO\n");
 
     MPI_Win_fence(0, win);    
-    MPI_Put(local_mem, N, MPI_INT, (proc_id +1)%num_procs, 0, N, MPI_INT, win);
+    MPI_Put(local_mem, N, MPI_INT, 0, 0, N, MPI_INT, win);
     MPI_Win_fence(0, win);    
         for (int i = 0; i < num_procs; i++) {
         printf("Val %d in shared_mem rank: %d %d\n", i, shared_mem[i], proc_id);
