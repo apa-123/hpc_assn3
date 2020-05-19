@@ -65,8 +65,9 @@ int main(int argc, char* argv[])
     printf("I am rank %d and I sent %d \n", rank, local_count);
 
     if (rank == 0) {
-        // MPI_Win_fence(0, win);    
-        MPI_Get(shared_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
+        // MPI_Get(shared_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
+        MPI_Get_accumulate(shared_mem, num_ranks, MPI_INT, &total_count, 1, MPI_INT, 0, 0, num_ranks, MPI_INT, MPI_SUM, win);
+
         // MPI_Win_fence(0, win);    
 
 	    // total_count += local_count;
