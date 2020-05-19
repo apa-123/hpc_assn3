@@ -66,7 +66,8 @@ int main(int argc, char* argv[])
 
     if (rank == 0) {
         // MPI_Get(shared_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
-        MPI_Get_accumulate(shared_mem, num_ranks, MPI_INT, &total_count, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, MPI_SUM, win);
+        // MPI_Get_accumulate(shared_mem, num_ranks, MPI_INT, &total_count, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, MPI_SUM, win);
+        MPI_Fetch_and_op(shared_mem, &total_count, MPI_INT, 0, 0, MPI_SUM, win);
 
         // MPI_Win_fence(0, win);    
 
