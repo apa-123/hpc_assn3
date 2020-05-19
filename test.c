@@ -26,7 +26,7 @@ int main(int argc, char* argv[])
 
     int N = 4;
     int* local_mem = malloc(N* sizeof(int));
-    int* shared_mem = malloc(N*sizeof(int));
+    int* shared_mem = malloc(num_procs*N*sizeof(int));
     for (int i = 0; i < N; ++i)
     {
         local_mem[i] = proc_id * N + i;
@@ -38,11 +38,13 @@ int main(int argc, char* argv[])
     // MPI_Win_allocate(1000*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &local_count, &win);
 
     MPI_Win_fence(0, win);    
-    MPI_Put(local_mem, N, MPI_INT, (proc_id+1)%num_procs, 0, N, MPI_INT, win);
+    // MPI_Put(local_mem, N, MPI_INT, (proc_id+1)%num_procs, 0, N, MPI_INT, win);
+    MPI_Put(local_mem, N, MPI_INT, 0, 0, N, MPI_INT, win);
+
     MPI_Win_fence(0, win);    
     
     printf("mpi rank %d got data: ", proc_id);
-    for (int i = 0; i < N; i++) {
+    for (int i = 0; i < N*num_procs; i++) {
         printf("%d ", shared_mem[i]);
     }
     printf("\n");
