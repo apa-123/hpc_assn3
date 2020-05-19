@@ -66,15 +66,15 @@ int main(int argc, char* argv[])
 
     if (rank == 0) {
         // MPI_Get(shared_mem, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, win);
-        MPI_Get_accumulate(shared_mem, num_ranks, MPI_INT, &total_count, 1, MPI_INT, 0, 0, num_ranks, MPI_INT, MPI_SUM, win);
+        MPI_Get_accumulate(shared_mem, num_ranks, MPI_INT, &total_count, num_ranks, MPI_INT, 0, 0, num_ranks, MPI_INT, MPI_SUM, win);
 
         // MPI_Win_fence(0, win);    
 
 	    // total_count += local_count;
-	    for (i = 0; i < num_ranks; i++) {
-            printf("Val %d in shared_mem: %d\n", i, shared_mem[i]);
-	    	total_count += shared_mem[i];
-	    }
+	    // for (i = 0; i < num_ranks; i++) {
+        //     printf("Val %d in shared_mem: %d\n", i, shared_mem[i]);
+	    // 	total_count += shared_mem[i];
+	    // }
     	    // Estimate Pi and display the result
     	pi = ((double)total_count / (double) (flip * num_ranks)) * 4.0;
     }
