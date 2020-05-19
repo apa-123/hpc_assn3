@@ -37,8 +37,6 @@ int main(int argc, char* argv[])
     MPI_Win_create(shared_mem, N*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
     // MPI_Win_allocate(1000*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &local_count, &win);
 
-    printf("HELLO\n");
-
     MPI_Win_fence(0, win);    
     MPI_Put(local_mem, N, MPI_INT, (proc_id+1)%num_procs, 0, N, MPI_INT, win);
     MPI_Win_fence(0, win);    
@@ -47,6 +45,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < num_procs; i++) {
         printf("%d ", shared_mem[i]);
     }
+    printf("\n");
 
     stop_time = MPI_Wtime();
     elapsed_time = stop_time - start_time;
