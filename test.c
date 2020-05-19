@@ -25,13 +25,13 @@ int main(int argc, char* argv[])
     MPI_Comm_rank(MPI_COMM_WORLD, &proc_id);
 
     int N = 4;
-    int* local_mem = malloc(N * sizeof(int));
+    int* local_mem = malloc(1 * sizeof(int));
     int* shared_mem = malloc(N*sizeof(int));
     for (int i = 0; i < N; ++i)
     {
-        local_mem[i] = proc_id * N + i;
         shared_mem[i] = 0;
     }
+    local_mem[0] = proc_id;
 
     MPI_Win win;
     MPI_Win_create(shared_mem, N*sizeof(int), sizeof(int), MPI_INFO_NULL, MPI_COMM_WORLD, &win);
