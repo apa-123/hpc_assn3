@@ -42,8 +42,8 @@ int main(int argc, char* argv[])
     MPI_Win_fence(0, win);    
     MPI_Put(local_mem, N, MPI_INT, (proc_id +1)%num_procs, 0, N, MPI_INT, win);
     MPI_Win_fence(0, win);    
-        for (i = 0; i < num_ranks; i++) {
-        printf("Val %d in shared_mem rank: %d %d\n", i, shared_mem[i], rank);
+        for (int i = 0; i < num_procs; i++) {
+        printf("Val %d in shared_mem rank: %d %d\n", i, shared_mem[i], proc_id);
     }
 
 
@@ -51,7 +51,7 @@ int main(int argc, char* argv[])
 
     if (proc_id == 0) {
 	    int counts[num_procs - 1];
-        MPI_Get(&counts, num_procs - 1, MPI_INT, 1, 0, 1, MPI_INT, win);
+        MPI_Get(&counts, num_procs - 1, MPI_INT, 0, 0, 1, MPI_INT, win);
 
 
 	    // total_count += local_count;
